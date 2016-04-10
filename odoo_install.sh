@@ -235,5 +235,29 @@ echo "-----------------------------------------------------------"
 sudo apt-get install apache2 libapache2-mod-proxy-uwsgi -y
 sudo a2enmod proxy proxy_http proxy_connect
 
+# Agregamos un Host Virtual dentro del archivo por defecto de apache
+# ruta: /etc/apache2/sites-available/000-default.conf
+# Agremos al final de todo el siguiente fragmento
+
+<VirtualHost *:80>
+    # Nombre de Dominio o Subdominio
+    ServerName tudominio.com
+    ServerSignature On
+    ProxyRequests Off
+    ProxyPreserveHost On
+    ErrorLog /var/log/apache2/tudominio.com-error.log
+    LogLevel warn
+    CustomLog /var/log/apache2/tudominio.com-access.log combined
+    ProxyPass / http://localhost:8069/
+    ProxyPassReverse / http://localhost:8069/
+
+    # Fix IE problem (httpapache proxy dav error 408/409)
+    SetEnv proxy-nokeepalive 1
+    <location />
+            Allow from All
+        </location>        
+</VirtualHost>
+
+#Guardamos y procedemos a reiniciar el Apache2
 sudo service apache2 restart
 
