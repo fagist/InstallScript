@@ -228,3 +228,12 @@ echo "Start Odoo service: sudo service $OE_CONFIG start"
 echo "Stop Odoo service: sudo service $OE_CONFIG stop"
 echo "Restart Odoo service: sudo service $OE_CONFIG restart"
 echo "-----------------------------------------------------------"
+
+#--------------------------------------------------
+# Install Apache Proxy
+#--------------------------------------------------
+sudo apt-get install apache2 libapache2-mod-proxy-uwsgi -y
+sudo a2enmod proxy proxy_http proxy_connect
+
+sudo service apache2 restart
+
